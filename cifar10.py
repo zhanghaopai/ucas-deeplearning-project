@@ -1,7 +1,6 @@
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-import matplotlib.pyplot as plt
 from models.MLP import MLP
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -36,15 +35,6 @@ test_datasets = datasets.CIFAR10(
 # 定义dataloader
 train_dataloader = DataLoader(train_datasets, batch_size=BATCH_SIZE, shuffle=True)
 test_dataloader = DataLoader(test_datasets, batch_size=BATCH_SIZE, shuffle=False)
-
-
-# train_feature, train_label = next(iter(train_dataloader))
-# img = train_feature[0].squeeze()
-# img = img.permute(1, 2, 0)
-# print(img.shape)
-# label = train_label[0]
-# plt.imshow(img)
-# plt.show()
 
 input_size=3*32*32 # 输入大小
 classes_num=10  # 分类数量
