@@ -2,7 +2,7 @@ import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-from models import MLP
+from models.MLP import MLP
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -46,15 +46,15 @@ test_dataloader = DataLoader(test_datasets, batch_size=BATCH_SIZE, shuffle=False
 # plt.imshow(img)
 # plt.show()
 
-input_size=3*32*32
-output_size=10
+input_size=3*32*32 # 输入大小
+classes_num=10  # 分类数量
 # 定义模型、优化器、loss
-model = MLP(input_size, output_size)
-optimizer=torch.optim.SGD(model.parameters(), LEARNING_RATE, MOMENTUM)
+# model = MLP(input_size=input_size, output_size=output_size)
+# optimizer=torch.optim.SGD(model.parameters(), LEARNING_RATE, MOMENTUM)
 
 
 if __name__=='__main__':
-    model = MLP(input_size, output_size)
+    model = MLP(input_size=input_size, classes_num=classes_num)
     optimizer = torch.optim.SGD(model.parameters(), LEARNING_RATE, MOMENTUM)
 
 
