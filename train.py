@@ -1,5 +1,7 @@
 import torch
-def train(device, epochs, train_loader,test_loader, input_size, model, optimizer, loss_function):
+
+
+def train(device, epochs, train_loader, test_loader, input_size, model, optimizer, loss_function):
     print("此模型在", device, "上训练")
     for epoch in range(epochs):
         # 训练模式
