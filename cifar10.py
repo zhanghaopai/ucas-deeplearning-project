@@ -56,5 +56,5 @@ if __name__ == '__main__':
     optimizer = torch.optim.SGD(model.parameters(), LEARNING_RATE, MOMENTUM)
     # 训练
     train(device=device, epochs=EPOCHS, train_loader=train_dataloader,
-          input_size=input_size, model=model,
+          test_loader=test_dataloader, input_size=input_size, model=model,
           optimizer=optimizer, loss_function=F.cross_entropy)
