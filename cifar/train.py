@@ -2,7 +2,6 @@ import torch
 
 
 def train(device, train_loader, input_size, model, optimizer, loss_function):
-    print("此模型在", device, "上训练")
     # 训练模式
     model.train()
     epoch_train_loss = 0

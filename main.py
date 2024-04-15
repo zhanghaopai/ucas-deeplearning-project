@@ -44,6 +44,7 @@ input_size = 3 * 32 * 32  # 输入大小
 classes_num = 10  # 分类数量
 
 if __name__ == '__main__':
+    print("此模型在", DEVICE, "上训练") # 设备
     # 模型
     model = MLP(input_size=input_size, classes_num=classes_num)
     # 优化器
