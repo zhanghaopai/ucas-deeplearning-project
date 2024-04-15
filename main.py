@@ -5,8 +5,9 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
+from cifar.test import test
+from cifar.train import train
 from models.MLP import MLP
-from train import train
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -15,7 +16,7 @@ BATCH_SIZE = 512  # batch size
 EPOCHS = 20  # 训练批次
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-LEARNING_RATE = 0.01
+LEARNING_RATE = 1e-3
 MOMENTUM = 0.9
 
 # 定义训练集和测试集
@@ -41,18 +42,16 @@ test_dataloader = DataLoader(test_datasets, batch_size=BATCH_SIZE, shuffle=False
 
 input_size = 3 * 32 * 32  # 输入大小
 classes_num = 10  # 分类数量
-# 定义模型、优化器、loss
-# model = MLP(input_size=input_size, output_size=output_size)
-# optimizer=torch.optim.SGD(model.parameters(), LEARNING_RATE, MOMENTUM)
-
 
 if __name__ == '__main__':
     # 模型
     model = MLP(input_size=input_size, classes_num=classes_num)
     # 优化器
-    SGD_optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM)
+    # SGD_optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM)
     adam_optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
-    # 训练
-    train(device=DEVICE, epochs=EPOCHS, train_loader=train_dataloader,
-          test_loader=test_dataloader, input_size=input_size, model=model,
-          optimizer=adam_optimizer, loss_function=F.cross_entropy)
+    for epoch in range(EPOCHS):
+        train_avg_loss = train(device=DEVICE, train_loader=train_dataloader, input_size=input_size, model=model,
+                               optimizer=adam_optimizer, loss_function=F.cross_entropy)
+        vaild_avg_loss = test(device=DEVICE, test_loader=test_dataloader, input_size=input_size, model=model,
+                              loss_function=F.cross_entropy)
+        print("epoch: {}, train_loss: {}, test_loss: {}".format(epoch + 1, train_avg_loss, vaild_avg_loss))
