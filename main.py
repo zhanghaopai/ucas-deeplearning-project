@@ -53,6 +53,6 @@ if __name__ == '__main__':
     for epoch in range(EPOCHS):
         train_avg_loss = train(device=DEVICE, train_loader=train_dataloader, input_size=input_size, model=model,
                                optimizer=adam_optimizer, loss_function=F.cross_entropy)
-        vaild_avg_loss = test(device=DEVICE, test_loader=test_dataloader, input_size=input_size, model=model,
+        vaild_avg_loss, valid_accuracy = test(device=DEVICE, test_loader=test_dataloader, input_size=input_size, model=model,
                               loss_function=F.cross_entropy)
-        print("epoch: {}, train_loss: {}, test_loss: {}".format(epoch + 1, train_avg_loss, vaild_avg_loss))
+        print("epoch: {}, train_loss: {}, test_loss: {}，accuracy:{}".format(epoch + 1, train_avg_loss, vaild_avg_loss, valid_accuracy))
