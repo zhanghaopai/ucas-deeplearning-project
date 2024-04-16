@@ -1,10 +1,12 @@
-Sample Module Repository
+Train Cifar10 with Pytorch
 ========================
 
-This simple project is an example repo for Python projects.
+# Setup
+1. python: 3.8+
+2. Pytorch: 2.2.1+
 
-`Learn more <http://www.kennethreitz.org/essays/repository-structure-and-python>`_.
+# Training
 
----------------
-
-If you want to learn more about ``setup.py`` files, check out `this repository <https://github.com/kennethreitz/setup.py>`_.
+```
+python main.py  --model CNN
+```
