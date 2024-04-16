@@ -5,7 +5,6 @@ def train(device, train_loader, input_size, model, optimizer, loss_function):
     # 训练模式
     model.train()
     epoch_train_loss = 0
-    epoch_correct = 0
     for i, (images, labels) in enumerate(train_loader):
         # 梯度清零
         optimizer.zero_grad()
