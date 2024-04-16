@@ -5,6 +5,7 @@ def train(device, train_loader, input_size, model, optimizer, loss_function):
     # 训练模式
     model.train()
     epoch_train_loss = 0
+    epoch_correct = 0
     for i, (images, labels) in enumerate(train_loader):
         # 梯度清零
         optimizer.zero_grad()
@@ -12,6 +13,7 @@ def train(device, train_loader, input_size, model, optimizer, loss_function):
         image = images.reshape(-1, input_size).to(device)
         label = labels.to(device)
         output = model(image)
+        # 计算loss，优化目标
         batch_loss = loss_function(output, label)
 
         # 反向传播与优化

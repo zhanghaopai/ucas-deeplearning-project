@@ -10,8 +10,13 @@ def test(device, test_loader, input_size, model, loss_function):
         for i, (vimages, vlabels) in enumerate(test_loader):
             vimage = vimages.reshape(-1, input_size)
             voutput = model(vimage)
+            # loss
             vbatch_loss = loss_function(voutput, vlabels)
             epoch_valid_loss += vbatch_loss
+
+            # accrucy
+
     vaild_avg_loss = epoch_valid_loss / len(test_loader)
     # 保存模型
+
     return vaild_avg_loss
