@@ -18,5 +18,6 @@ class MLP(Module):
         x = F.relu(self.hidden_layer1(x))
         x = F.relu(self.hidden_layer2(x))
         x = F.relu(self.out_layer(x))
-        return F.log_softmax(x, dim=0)
+        result = F.log_softmax(x, dim=1)
+        return result
 
