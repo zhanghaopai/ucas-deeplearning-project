@@ -9,11 +9,9 @@ def train(device, train_loader, input_size, model, optimizer, loss_function):
         # 梯度清零
         optimizer.zero_grad()
         # 前向传播
-        image = images.reshape(-1, input_size).to(device)
-        label = labels.to(device)
-        output = model(image)
+        output = model(images.to(device))
         # 计算loss，优化目标
-        batch_loss = loss_function(output, label)
+        batch_loss = loss_function(output, labels.to(device))
 
         # 反向传播与优化
         batch_loss.backward()

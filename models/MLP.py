@@ -15,6 +15,7 @@ class MLP(Module):
 
 
     def forward(self, x):
+        x = x.reshape(-1, self.input_size)
         x = F.relu(self.hidden_layer1(x))
         x = F.relu(self.hidden_layer2(x))
         x = F.relu(self.out_layer(x))

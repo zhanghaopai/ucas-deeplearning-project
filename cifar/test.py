@@ -10,10 +10,9 @@ def test(device, test_loader, input_size, model, loss_function):
     # test禁止优化
     with torch.no_grad():
         for i, (vimages, vlabels) in enumerate(test_loader):
-            vimage = vimages.reshape(-1, input_size)
-            voutput = model(vimage)
+            voutput = model(vimages.to(device))
             # loss
-            vbatch_loss = loss_function(voutput, vlabels)
+            vbatch_loss = loss_function(voutput, vlabels.to(device))
             epoch_valid_loss += vbatch_loss
 
             # accrucy
