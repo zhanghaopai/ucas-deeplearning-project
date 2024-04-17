@@ -1,7 +1,8 @@
-from torch.nn import Module
-from torch import nn
 import configparser
+
 import torch.nn.functional as F
+from torch import nn
+from torch.nn import Module
 
 
 class ConvNet(Module):
@@ -20,11 +21,16 @@ class ConvNet(Module):
         self.pooling = nn.MaxPool2d(kernel_size=config.getint("MaxPooling", "kernal_size"),
                                     stride=config.getint("MaxPooling", "stride"))
 
-        self.output_layer = nn.Linear(in_features=config.getint("Conv", "out_channel1"), out_features=classes_num)
+        image_width = int(32 / config.getint("MaxPooling", "kernal_size"))
+        self.image_size = config.getint("Conv", "out_channel1") * image_width * image_width
+        self.fc1 = nn.Linear(in_features=self.image_size, out_features=128)
+        self.fc2 = nn.Linear(128, classes_num)
 
     def forward(self, x):
         x = self.conv1(x)
         x = self.relu(x)
         x = self.pooling(x)
-        x = self.output_layer(x)
+        x = x.view(x.shape[0], -1)
+        x = self.fc1(x)
+        x = self.fc2(x)
         return F.log_softmax(x, dim=1)
