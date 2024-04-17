@@ -11,6 +11,7 @@ import configparser
 from cifar.test import test
 from cifar.train import train
 from models.MLP import MLP
+from models.ConvNet import ConvNet
 
 # 下载cifar10数据集不使用ssl协议
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -54,7 +55,8 @@ if __name__ == '__main__':
     # 记录开始时间
     start_time=time.time()
     # 模型
-    model = MLP(input_size=input_size, classes_num=classes_num)
+    # model = MLP(input_size=input_size, classes_num=classes_num)
+    model = ConvNet(in_channel=3, classes_num=classes_num, device=DEVICE)
     # 优化器
     SGD_optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM)
     # adam_optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)

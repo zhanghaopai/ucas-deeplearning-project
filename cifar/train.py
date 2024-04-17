@@ -11,6 +11,7 @@ def train(device, train_loader, input_size, model, optimizer, loss_function):
         # 前向传播
         output = model(images.to(device))
         # 计算loss，优化目标
+        print(output.shape)
         batch_loss = loss_function(output, labels.to(device))
 
         # 反向传播与优化
