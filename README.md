@@ -2,17 +2,19 @@ Train Cifar10 with Pytorch
 ========================
 
 # Setup
+
 1. python: 3.8+
 2. Pytorch: 2.2.1+
 
 ```
 pip install -r requirements.txt
 ```
+
 ![](images/requirements.png)
 
 # Training
 
-## --help
+## help
 ```
 python main.py  --help
 ```
