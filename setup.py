@@ -12,13 +12,13 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='sample',
-    version='0.1.0',
-    description='Sample package for Python-Guide.org',
+    name='dl-with-cifar10',
+    version='1.0.0',
+    description='Deep Learning with Cifar-10 Datasets',
     long_description=readme,
-    author='Kenneth Reitz',
-    author_email='me@kennethreitz.com',
-    url='https://github.com/kennethreitz/samplemod',
+    author='Patrick Zhang',
+    author_email='zhanghaopai@outlook.com',
+    url='https://github.com/zhanghaopai/ucas-deeplearning-project.git',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )
