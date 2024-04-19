@@ -12,3 +12,5 @@ if __name__ == '__main__':
     model = args.model
     optimizer=args.optimizer
     lr=args.lr
+
+    batch(model = model, optimizer= optimizer, learning_rate= lr)
