@@ -1,5 +1,6 @@
-def train(device, train_loader, input_size, model, optimizer, loss_function):
+def train(device, train_loader, model, optimizer, loss_function):
     # 训练模式
+    model.to(device)
     model.train()
     epoch_train_loss = 0
     for i, (images, labels) in enumerate(train_loader):
