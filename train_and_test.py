@@ -21,7 +21,6 @@ config=configparser.ConfigParser()
 config.read("config.ini")
 BATCH_SIZE = config.getint("Training", "batch_size")
 EPOCHS = config.getint("Training", "epochs")  # 训练批次
-LEARNING_RATE = config.getfloat("Training", "learning_rate") # 学习率
 MOMENTUM = config.getfloat("Training", "momentum")
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -55,19 +54,29 @@ def batch(model, optimizer, learning_rate):
     # 记录开始时间
     start_time = time.time()
     # 模型
-    # model = MLP(input_size=input_size, classes_num=classes_num)
-    model = ConvNet(in_channel=3, classes_num=classes_num, device=DEVICE)
+    if(model == 'mlp'):
+        real_model = MLP(input_size=input_size, classes_num=classes_num, device=DEVICE, config=config)
+    else:
+        real_model= ConvNet(in_channel=3, classes_num=classes_num, device=DEVICE, config=config)
     # 优化器
-    SGD_optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM)
-    # adam_optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    if (optimizer == "sgd"):
+        real_optimizer = torch.optim.SGD(real_model.parameters(), lr=float(learning_rate), momentum=MOMENTUM)
+    else:
+        real_optimizer = torch.optim.Adam(real_model.parameters(), lr=float(learning_rate))
     train_loss_list = []
     valid_loss_list = []
 
     for epoch in range(EPOCHS):
-        train_avg_loss = train(device=DEVICE, train_loader=train_dataloader, input_size=input_size, model=model,
-                               optimizer=SGD_optimizer, loss_function=F.cross_entropy)
-        vaild_avg_loss, valid_accuracy = test(device=DEVICE, test_loader=test_dataloader, input_size=input_size,
-                                              model=model,
+        train_avg_loss = train(device=DEVICE,
+                               train_loader=train_dataloader,
+                               input_size=input_size,
+                               model=real_model,
+                               optimizer=real_optimizer,
+                               loss_function=F.cross_entropy)
+
+        vaild_avg_loss, valid_accuracy = test(device=DEVICE,
+                                              test_loader=test_dataloader,
+                                              model=real_model,
                                               loss_function=F.cross_entropy)
         print("epoch: {}, train_loss: {}, test_loss: {}，accuracy:{}".format(epoch + 1, train_avg_loss, vaild_avg_loss,
                                                                             valid_accuracy))
@@ -76,12 +85,12 @@ def batch(model, optimizer, learning_rate):
     answers = []
     with torch.no_grad():
         for i, (image, label) in enumerate(test_dataloader):
-            score = model(image)
+            score = real_model(image.to(DEVICE))
             _, pred = torch.max(score, dim=1)
             predictions += list(pred.cpu().numpy())
             answers += list(label.cpu().numpy())
     print(classification_report(predictions, answers))
-    # 记录结束时间
+    # 绘制loss曲线
     end_time = time.time()
     elapsed_time = end_time - start_time
     print(elapsed_time)
