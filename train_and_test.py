@@ -70,7 +70,6 @@ def batch(model, optimizer, learning_rate):
     for epoch in range(EPOCHS):
         train_avg_loss = train(device=DEVICE,
                                train_loader=train_dataloader,
-                               input_size=input_size,
                                model=real_model,
                                optimizer=real_optimizer,
                                loss_function=F.cross_entropy)
