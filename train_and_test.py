@@ -7,6 +7,7 @@ from torchvision import datasets, transforms
 from sklearn.metrics import classification_report
 import time
 import configparser
+import matplotlib.pyplot as plt
 
 from cifar.test import test
 from cifar.train import train
@@ -73,13 +74,18 @@ def batch(model, optimizer, learning_rate):
                                model=real_model,
                                optimizer=real_optimizer,
                                loss_function=F.cross_entropy)
+        train_loss_list.append(train_avg_loss)
 
         vaild_avg_loss, valid_accuracy = test(device=DEVICE,
                                               test_loader=test_dataloader,
                                               model=real_model,
                                               loss_function=F.cross_entropy)
+        valid_loss_list.append(valid_loss_list)
         print("epoch: {}, train_loss: {}, test_loss: {}，accuracy:{}".format(epoch + 1, train_avg_loss, vaild_avg_loss,
                                                                             valid_accuracy))
+
+    # 绘制loss曲线
+    make_loss_plt(train_loss_list, valid_loss_list)
     # report
     predictions = []
     answers = []
@@ -90,7 +96,17 @@ def batch(model, optimizer, learning_rate):
             predictions += list(pred.cpu().numpy())
             answers += list(label.cpu().numpy())
     print(classification_report(predictions, answers))
-    # 绘制loss曲线
+
     end_time = time.time()
     elapsed_time = end_time - start_time
-    print(elapsed_time)
+    print("训练+测试时长：",elapsed_time)
+
+
+def make_loss_plt(train_loss_list, valid_loss_list):
+    plt.plot(train_loss_list, label='Training Loss')
+    plt.plot(valid_loss_list, label="Testing Loss")
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title('Training Loss Curve')
+    plt.legend()
+    plt.show()
