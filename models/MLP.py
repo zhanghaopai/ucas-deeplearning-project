@@ -5,17 +5,19 @@ import configparser
 
 
 class MLP(Module):
-    def __init__(self, input_size, classes_num, config):
+    def __init__(self, input_size, classes_num, device, config):
         self.input_size=input_size
         self.classes_num=classes_num
+        self.device=device
         super().__init__()
-        self.hidden_layer1 = Linear(input_size, config.getint("MLP","hidden1"))
-        self.hidden_layer2 = Linear(config.getint("MLP","hidden1"), config.getint("MLP","hidden2"))
-        self.out_layer = Linear(config.getint("MLP","hidden2"), classes_num)
+        self.hidden_layer1 = Linear(input_size, config.getint("MLP","hidden1"), device=device)
+        self.hidden_layer2 = Linear(config.getint("MLP","hidden1"), config.getint("MLP","hidden2"), device=device)
+        self.out_layer = Linear(config.getint("MLP","hidden2"), classes_num, device=device)
 
 
 
     def forward(self, x):
+        x.to(self.device)
         x = x.reshape(-1, self.input_size)
         x = F.relu(self.hidden_layer1(x))
         x = F.relu(self.hidden_layer2(x))

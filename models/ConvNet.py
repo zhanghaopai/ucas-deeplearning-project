@@ -8,6 +8,7 @@ from torch.nn import Module
 class ConvNet(Module):
     def __init__(self, in_channel, classes_num, device, config) -> None:
         super().__init__()
+        self.device=device
         self.conv1 = nn.Conv2d(in_channels=in_channel,
                                out_channels=config.getint("Conv", "out_channel1"),
                                kernel_size=config.getint("Conv", "kernal_size1"),
@@ -46,6 +47,7 @@ class ConvNet(Module):
         self.fc2 = nn.Linear(128, classes_num)
 
     def forward(self, x):
+        x.to(self.device)
         x = self.conv1(x)
         x = self.relu1(x)
         x = self.conv2(x)
