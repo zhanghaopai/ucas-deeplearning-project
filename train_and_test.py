@@ -57,12 +57,12 @@ def batch(model, optimizer, learning_rate):
     # 模型
     if(model == 'mlp'):
         real_model = MLP(input_size=input_size, classes_num=classes_num, device=DEVICE, config=config)
-    else:
+    elif (model == "cnn"):
         real_model= ConvNet(in_channel=3, classes_num=classes_num, device=DEVICE, config=config)
     # 优化器
     if (optimizer == "sgd"):
         real_optimizer = torch.optim.SGD(real_model.parameters(), lr=float(learning_rate), momentum=MOMENTUM)
-    else:
+    elif (optimizer == "adam"):
         real_optimizer = torch.optim.Adam(real_model.parameters(), lr=float(learning_rate))
     train_loss_list = []
     valid_loss_list = []
