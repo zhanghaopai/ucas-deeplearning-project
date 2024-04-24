@@ -79,7 +79,7 @@ def batch(model, optimizer, learning_rate):
                                               test_loader=test_dataloader,
                                               model=real_model,
                                               loss_function=F.cross_entropy)
-        valid_loss_list.append(valid_loss_list)
+        valid_loss_list.append(vaild_avg_loss)
         print("epoch: {}, train_loss: {}, test_loss: {}，accuracy:{}".format(epoch + 1, train_avg_loss, vaild_avg_loss,
                                                                             valid_accuracy))
 
