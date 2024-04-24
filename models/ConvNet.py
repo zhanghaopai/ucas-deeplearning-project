@@ -40,9 +40,7 @@ class ConvNet(Module):
 
         image_width = int(32 / config.getint("MaxPooling", "kernal_size"))
 
-
-        self.image_size = config.getint("Conv", "out_channel1") * image_width * image_width
-        self.fc1 = nn.Linear(in_features=self.image_size, out_features=128)
+        self.fc1 = nn.Linear(in_features=config.getint("Conv", "out_size"), out_features=128)
         self.dropout2=nn.Dropout(config.getfloat("Conv", "dropout2"))
         self.fc2 = nn.Linear(128, classes_num)
 
