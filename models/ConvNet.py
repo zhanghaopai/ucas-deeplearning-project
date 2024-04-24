@@ -38,8 +38,6 @@ class ConvNet(Module):
 
         self.dropout1=nn.Dropout2d(config.getfloat("Conv", "dropout1"))
 
-        image_width = int(32 / config.getint("MaxPooling", "kernal_size"))
-
         self.fc1 = nn.Linear(in_features=config.getint("Conv", "out_size"), out_features=128)
         self.dropout2=nn.Dropout(config.getfloat("Conv", "dropout2"))
         self.fc2 = nn.Linear(128, classes_num)
