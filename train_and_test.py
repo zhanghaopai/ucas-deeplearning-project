@@ -66,6 +66,7 @@ def batch(model, optimizer, learning_rate):
         real_optimizer = torch.optim.Adam(real_model.parameters(), lr=float(learning_rate))
     train_loss_list = []
     valid_loss_list = []
+    accuracy_list=[]
 
     for epoch in range(EPOCHS):
         train_avg_loss = train(device=DEVICE,
@@ -80,6 +81,7 @@ def batch(model, optimizer, learning_rate):
                                               model=real_model,
                                               loss_function=F.cross_entropy)
         valid_loss_list.append(vaild_avg_loss)
+        accuracy_list.append(valid_accuracy)
         print("epoch: {}, train_loss: {}, test_loss: {}，accuracy:{}".format(epoch + 1, train_avg_loss, vaild_avg_loss,
                                                                             valid_accuracy))
 
@@ -101,9 +103,10 @@ def batch(model, optimizer, learning_rate):
     print("训练+测试时长：",elapsed_time)
 
 
-def make_loss_plt(train_loss_list, valid_loss_list):
+def make_loss_plt(train_loss_list, valid_loss_list, accuracy_list):
     plt.plot(train_loss_list, label='Training Loss')
     plt.plot(valid_loss_list, label="Testing Loss")
+    plt.plot(accuracy_list, label="Accuracy")
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.title('Training Loss Curve')
