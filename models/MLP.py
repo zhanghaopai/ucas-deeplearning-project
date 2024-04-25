@@ -1,4 +1,4 @@
-from torch.nn import Module, Linear
+from torch.nn import Module, Linear, Dropout
 import torch.nn.functional as F
 
 import configparser
@@ -11,6 +11,7 @@ class MLP(Module):
         self.device=device
         super().__init__()
         self.hidden_layer1 = Linear(input_size, config.getint("MLP","hidden1"), device=device)
+        self.dropout= Dropout(0.5)
         self.hidden_layer2 = Linear(config.getint("MLP","hidden1"), config.getint("MLP","hidden2"), device=device)
         self.out_layer = Linear(config.getint("MLP","hidden2"), classes_num, device=device)
 
@@ -20,6 +21,7 @@ class MLP(Module):
         x.to(self.device)
         x = x.reshape(-1, self.input_size)
         x = F.relu(self.hidden_layer1(x))
+        x = self.dropout(x)
         x = F.relu(self.hidden_layer2(x))
         x = F.relu(self.out_layer(x))
         result = F.log_softmax(x, dim=1)
@@ -31,6 +33,6 @@ if __name__=='__main__':
     config = configparser.ConfigParser()
     config.read("../config.ini")
 
-    mlp = MLP(3*32*32, 10, config)
+    mlp = MLP(3*32*32, 10, "cuda", config)
     print(mlp)
 
