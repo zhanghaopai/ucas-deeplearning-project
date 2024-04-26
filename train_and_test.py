@@ -33,7 +33,11 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 train_datasets = datasets.CIFAR10(
     root="data",
     transform=transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+        [
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,))
+        ]
     ),
     train=True,
     download=True,
