@@ -54,7 +54,7 @@ input_size = 3 * 32 * 32  # 输入大小
 classes_num = 10  # 分类数量
 
 def batch(model, optimizer, learning_rate):
-    global real_model
+    global real_model, real_optimizer
     print("此模型在", DEVICE, "上训练")  # 设备
 
     # 模型
