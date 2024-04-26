@@ -21,10 +21,10 @@ class BasicBlock(nn.Module):
             )
 
     def forward(self, x):
-        out = torch.relu(self.bn1(self.conv1(x)))
+        out = F.relu(self.bn1(self.conv1(x)))
         out = self.bn2(self.conv2(out))
         out += self.shortcut(x)
-        out = torch.relu(out)
+        out = F.relu(out)
         return out
 
 class ResNet(nn.Module):
