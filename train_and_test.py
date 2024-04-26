@@ -97,7 +97,8 @@ def batch(model, optimizer, learning_rate):
         print("epoch: {}, train_loss: {}, test_loss: {}，accuracy:{}".format(epoch + 1, train_avg_loss, vaild_avg_loss,
                                                                             valid_accuracy))
         # 是否早停
-        early_stopping(vaild_avg_loss, real_model)
+        if early_stopping(vaild_avg_loss, real_model):
+            break
     end_time = time.time()
     elapsed_time = end_time - start_time
     print("训练+测试时长：", elapsed_time)
