@@ -9,12 +9,15 @@ import time
 import configparser
 import matplotlib.pyplot as plt
 
+from cifar.earlystopping import EarlyStopping
 from cifar.test import test
 from cifar.train import train
 from models.MLP import MLP
 from models.ConvNet import ConvNet
 
 # 下载cifar10数据集不使用ssl协议
+from models.ResNet import ResNet18, ResNet34
+
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # 超参数定义
@@ -51,23 +54,32 @@ input_size = 3 * 32 * 32  # 输入大小
 classes_num = 10  # 分类数量
 
 def batch(model, optimizer, learning_rate):
+    global real_model
     print("此模型在", DEVICE, "上训练")  # 设备
-    # 记录开始时间
-    start_time = time.time()
+
     # 模型
     if(model == 'mlp'):
         real_model = MLP(input_size=input_size, classes_num=classes_num, device=DEVICE, config=config)
     elif (model == "cnn"):
         real_model= ConvNet(in_channel=3, classes_num=classes_num, device=DEVICE, config=config)
+    elif (model == "resnet18"):
+        real_model = ResNet18()
+    elif (model == "resnet34"):
+        real_model = ResNet34()
     # 优化器
     if (optimizer == "sgd"):
         real_optimizer = torch.optim.SGD(real_model.parameters(), lr=float(learning_rate), momentum=MOMENTUM)
     elif (optimizer == "adam"):
         real_optimizer = torch.optim.Adam(real_model.parameters(), lr=float(learning_rate))
+
+
+    early_stopping = EarlyStopping()
     train_loss_list = []
     valid_loss_list = []
     accuracy_list=[]
 
+    # 记录开始时间
+    start_time = time.time()
     for epoch in range(EPOCHS):
         train_avg_loss = train(device=DEVICE,
                                train_loader=train_dataloader,
@@ -84,6 +96,11 @@ def batch(model, optimizer, learning_rate):
         accuracy_list.append(valid_accuracy)
         print("epoch: {}, train_loss: {}, test_loss: {}，accuracy:{}".format(epoch + 1, train_avg_loss, vaild_avg_loss,
                                                                             valid_accuracy))
+        # 是否早停
+        early_stopping(vaild_avg_loss, real_model)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print("训练+测试时长：", elapsed_time)
 
     # 绘制loss曲线
     make_loss_plt(train_loss_list, valid_loss_list,accuracy_list)
@@ -98,9 +115,7 @@ def batch(model, optimizer, learning_rate):
             answers += list(label.cpu().numpy())
     print(classification_report(predictions, answers))
 
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print("训练+测试时长：",elapsed_time)
+
 
 
 def make_loss_plt(train_loss_list, valid_loss_list, accuracy_list):
