@@ -19,7 +19,7 @@ pip install -r requirements.txt
 python main.py  --help
 ```
 
-![](images/help.png)
+![](images/help.jpg)
 
 ## train
 ```
