@@ -23,7 +23,7 @@ python main.py  --help
 
 ## train
 ```
-python main.py --model mlp --optimizer sgd --lr 0.001
+python main.py --model mlp --optimizer sgd --lr 0.001 --active_function relu
 ```
 
 ## modify default value
