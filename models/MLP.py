@@ -5,7 +5,7 @@ import configparser
 
 
 class MLP(Module):
-    def __init__(self, input_size, classes_num, device, confi, active_function=F.relu):
+    def __init__(self, input_size, classes_num, device, config, active_function=F.relu):
         self.input_size=input_size
         self.classes_num=classes_num
         self.device=device
@@ -34,6 +34,6 @@ if __name__=='__main__':
     config = configparser.ConfigParser()
     config.read("../config.ini")
 
-    mlp = MLP(3*32*32, 10, "cpu", config)
+    mlp = MLP(3*32*32, 10, "cpu", config, active_function=F.tanh)
     print(mlp)
 
