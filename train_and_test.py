@@ -78,6 +78,8 @@ def batch(model, optimizer, learning_rate):
         real_optimizer = torch.optim.SGD(real_model.parameters(), lr=float(learning_rate), momentum=MOMENTUM)
     elif (optimizer == "adam"):
         real_optimizer = torch.optim.Adam(real_model.parameters(), lr=float(learning_rate))
+    elif (optimizer == "adagrad"):
+        real_optimizer = torch.optim.Adagrad(real_model.parameters(), lr=float(learning_rate))
 
 
     early_stopping = EarlyStopping()
