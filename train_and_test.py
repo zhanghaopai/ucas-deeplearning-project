@@ -60,19 +60,27 @@ test_dataloader = DataLoader(test_datasets, batch_size=BATCH_SIZE, shuffle=False
 input_size = 3 * 32 * 32  # 输入大小
 classes_num = 10  # 分类数量
 
-def batch(model, optimizer, learning_rate):
-    global real_model, real_optimizer
+def batch(model, optimizer, learning_rate, active_function):
+    global real_model, real_optimizer, real_active_function
     print("此模型在", DEVICE, "上训练")  # 设备
+
+    if(active_function == 'relu'):
+        real_active_function = F.relu
+    elif(active_function == 'sigmoid'):
+        real_active_function = F.sigmoid
+    elif(active_function == 'tanh'):
+        real_active_function = F.tanh
 
     # 模型
     if(model == 'mlp'):
-        real_model = MLP(input_size=input_size, classes_num=classes_num, device=DEVICE, config=config)
+        real_model = MLP(input_size=input_size, classes_num=classes_num, device=DEVICE, config=config, active_function=real_active_function)
     elif (model == "cnn"):
         real_model= ConvNet(in_channel=3, classes_num=classes_num, device=DEVICE, config=config)
     elif (model == "resnet18"):
         real_model = ResNet18()
     elif (model == "resnet34"):
         real_model = ResNet34()
+
     # 优化器
     if (optimizer == "sgd"):
         real_optimizer = torch.optim.SGD(real_model.parameters(), lr=float(learning_rate), momentum=MOMENTUM)
